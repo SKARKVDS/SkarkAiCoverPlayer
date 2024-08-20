@@ -3,8 +3,6 @@ import org.example.infrastructures.FilesMusicLoader;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
-
 public class FileLoaderTests {
     private IFileLoader fileLoader;
 

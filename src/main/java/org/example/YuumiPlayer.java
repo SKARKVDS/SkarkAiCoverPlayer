@@ -4,10 +4,10 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import org.example.infrastructures.Token;
 import org.example.commands.CommandManager;
 import org.example.infrastructures.IFileLoader;
 import org.example.infrastructures.FilesMusicLoader;
-import org.example.infrastructures.Token;
 
 
 public class YuumiPlayer {
