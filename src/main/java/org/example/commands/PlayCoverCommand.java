@@ -44,15 +44,14 @@ public class PlayCoverCommand implements ICommand {
         if(!verifyDisponibility.isMemberInVoiceChannel(event)) {
             return;
         }
-
         String song = "";
         try {
             song = filesMusicLoader.getSongFromFile(event.getOption("song").getAsString());
             PlayerManager playerManager = PlayerManager.get();
             playerManager.play(event.getGuild(), song);
-            event.reply("Playing song...").queue();
+            event.reply("Adding song... : " + event.getOption("song").getAsString()).queue();
         } catch (Exception e) {
-            event.reply("An error occurred while trying to play the song : "+song).queue();
+            event.reply("An error occurred while trying to play the song : "+event.getOption("song").getAsString()).queue();
         }
     }
 
@@ -72,6 +71,10 @@ public class PlayCoverCommand implements ICommand {
     }
 
     static void artistCompletion(CommandAutoCompleteInteractionEvent event, IFileLoader filesMusicLoader) {
+        completion(event, filesMusicLoader);
+    }
+
+    static void completion(CommandAutoCompleteInteractionEvent event, IFileLoader filesMusicLoader) {
         if (event.getOption("artist") != null && event.getFocusedOption().getName().equals("artist")) {
             String[] artists = filesMusicLoader.loadArtists();
             List<Command.Choice> options = Stream.of(artists)

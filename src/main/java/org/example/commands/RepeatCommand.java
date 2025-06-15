@@ -13,7 +13,7 @@ import java.util.List;
 public class RepeatCommand implements ICommand{
     @Override
     public String getName() {
-        return "repeat";
+        return "loop";
     }
 
     @Override

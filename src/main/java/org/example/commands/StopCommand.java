@@ -14,7 +14,7 @@ import java.util.List;
 public class StopCommand implements ICommand {
     @Override
     public String getName() {
-        return "stop";
+        return "clear";
     }
 
     @Override

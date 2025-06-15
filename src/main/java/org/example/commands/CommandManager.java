@@ -23,6 +23,10 @@ public class CommandManager extends ListenerAdapter {
         addCommand(new ListSongsArtistCommand(filesMusicLoader));
         addCommand(new ClearCommand());
         addCommand(new RepeatCommand());
+        addCommand(new PlayPlaylistCommand(filesMusicLoader));
+        addCommand(new PlayCommand());
+        addCommand(new PingMcCommand());
+        addCommand(new SearchMusicCommand(filesMusicLoader));
     }
 
     @Override

@@ -7,9 +7,10 @@ public class GuildMusicManager {
     private final TrackScheduler trackScheduler;
     private final AudioForwarder audioForwarder;
 
-    public GuildMusicManager(AudioPlayerManager playerManager) {
+    public GuildMusicManager(AudioPlayerManager playerManager,
+                             net.dv8tion.jda.api.entities.Guild guild) {
         AudioPlayer audioPlayer = playerManager.createPlayer();
-        trackScheduler = new TrackScheduler(audioPlayer);
+        trackScheduler = new TrackScheduler(audioPlayer, guild);
         audioPlayer.addListener(trackScheduler);
         audioForwarder = new AudioForwarder(audioPlayer);
     }

@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.playback.MutableAudioFrame;
 import net.dv8tion.jda.api.audio.AudioSendHandler;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 /**
@@ -15,8 +16,8 @@ import java.nio.ByteBuffer;
 public class AudioForwarder implements AudioSendHandler
 {
     private final AudioPlayer audioPlayer;
-    private final ByteBuffer buffer = ByteBuffer.allocate(1024);
-    private final MutableAudioFrame frame = new MutableAudioFrame();
+    private final ByteBuffer buffer;
+    private MutableAudioFrame frame;
 
     /**
      * @param audioPlayer Audio player to wrap.
@@ -24,6 +25,8 @@ public class AudioForwarder implements AudioSendHandler
     public AudioForwarder(AudioPlayer audioPlayer)
     {
         this.audioPlayer = audioPlayer;
+        this.buffer = ByteBuffer.allocate(1024);
+        this.frame = new MutableAudioFrame();
         this.frame.setBuffer(buffer);
     }
 
@@ -36,7 +39,8 @@ public class AudioForwarder implements AudioSendHandler
     @Override
     public ByteBuffer provide20MsAudio()
     {
-        return buffer.flip();
+        final Buffer tmp = ((Buffer) this.buffer).flip();
+        return (ByteBuffer) tmp;
     }
 
     @Override
