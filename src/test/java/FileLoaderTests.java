@@ -8,7 +8,8 @@ public class FileLoaderTests {
 
     @Before
     public void setUp() {
-        fileLoader = new FilesMusicLoader();
+        String path = "src/main/resources";
+        fileLoader = new FilesMusicLoader(path);
     }
 
     @Test
@@ -26,7 +27,7 @@ public class FileLoaderTests {
         // Given
         String[] musics;
         // When
-        musics = fileLoader.loadMusic("francis");
+        musics = fileLoader.loadMusic("org/example/musics/francis");
         // Then
         assert(musics.length > 0);
     }

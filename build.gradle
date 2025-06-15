@@ -1,19 +1,49 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
 }
 
 group 'org.example'
-version '1.0-SNAPSHOT'
+version '1.1-stable'
 
 repositories {
     mavenCentral()
     maven { url 'https://m2.dv8tion.net/releases' }
+    maven { url 'https://jitpack.io' } // Pour Lavalink-Client
 }
 
 dependencies {
-    implementation 'net.dv8tion:JDA:5.0.2'
-    implementation 'com.sedmelluq:lavaplayer:1.3.77'
-    implementation 'org.slf4j:slf4j-simple:1.7.30'
     testImplementation 'junit:junit:4.13.1'
+    // JDA (version stable compatible Slash Commands)
+    implementation 'net.dv8tion:JDA:5.0.0-beta.20'
+    implementation 'com.github.freyacodes:Lavalink-Client:3.7.1'
+    implementation 'com.sedmelluq:lavaplayer:1.3.78'
+
+    // SLF4J pour le logging (obligatoire avec Lavalink)
+    implementation 'org.slf4j:slf4j-simple:2.0.9'
 }
 
+configurations {
+    // configuration that holds jars to include in the jar
+    extraLibs
+
+    // configuration that holds jars to include in the classpath
+    compile.extendsFrom(extraLibs)
+
+    // configuration that holds jars to include in the runtime classpath
+    runtime.extendsFrom(extraLibs)
+}
+// add manifest to jar
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'org.example.YuumiPlayer'
+        )
+    }
+
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+
+    from {
+        configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}

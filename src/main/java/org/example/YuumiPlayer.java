@@ -9,18 +9,39 @@ import org.example.commands.CommandManager;
 import org.example.infrastructures.IFileLoader;
 import org.example.infrastructures.FilesMusicLoader;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class YuumiPlayer {
     public static void main(String[] args) {
         Token token = new Token();
 
-        IFileLoader filesMusicLoader = new FilesMusicLoader();
+        String path;
+
+        if (args.length == 0) {
+            path = "/var/apps/SKARKAICOVERFEEDER/wwwroot/musics";
+        }else {
+            path = args[0];
+        }
+
+        IFileLoader filesMusicLoader = new FilesMusicLoader(path);
         CommandManager commandManager = new CommandManager(filesMusicLoader);
+
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleAtFixedRate(() -> {
+            try {
+                filesMusicLoader.refreshMusicList();
+                System.out.println("Musics refreshed!");
+            } catch (Exception e) {
+                System.err.println("Error during music refresh: " + e.getMessage());
+            }
+        }, 0, 2, TimeUnit.MINUTES);
 
         JDA jda = JDABuilder.createDefault(token.TOKEN())
                 .addEventListeners(commandManager)
-                .setActivity(Activity.listening("SKARK AI COVERS"))
-                .setStatus(OnlineStatus.DO_NOT_DISTURB)
+                .setActivity(Activity.watching("du porno sur Yuumi"))
+                .setStatus(OnlineStatus.ONLINE)
                 .build();
     }
 }

@@ -1,19 +1,15 @@
 package org.example.infrastructures;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FilesMusicLoader implements IFileLoader {
     private final String initialPath;
-    private Map<String, String> musicMap;
+    public Map<String, String> musicMap;
     private final Map<String, String[]> artistAndMusicMap;
-    public FilesMusicLoader() {
-        this.initialPath = "src/main/resources";
+    public FilesMusicLoader(String path) {
+        this.initialPath = path;
         this.artistAndMusicMap = new HashMap<>();
-        loadAllMusic();
     }
 
     public String getSongFromFile(String getSong) {
@@ -28,7 +24,20 @@ public class FilesMusicLoader implements IFileLoader {
         return artistAndMusicMap.get(artist);
     }
 
-    public void loadAllMusic() {
+    @Override
+    public Map<String, String> getMusicMap() {
+        if (musicMap == null || musicMap.isEmpty()) {
+            this.loadAllMusic();
+        }
+        return musicMap;
+    }
+
+    @Override
+    public void refreshMusicList() {
+        this.loadAllMusic();
+    }
+
+    private void loadAllMusic() {
         musicMap = new HashMap<>();
         File directory = new File(initialPath);
         File[] directories = directory.listFiles(File::isDirectory);
